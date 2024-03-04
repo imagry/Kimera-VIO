@@ -51,7 +51,7 @@ std::vector<int> remapOpenGvInliersToKimera(
   return kimera_inliers;
 }
 
-Tracker::Tracker(const TrackerParams& tracker_params,
+KiTracker::KiTracker(const TrackerParams& tracker_params,
                  const Camera::ConstPtr& camera,
                  DisplayQueue* display_queue)
     : tracker_params_(tracker_params),
@@ -89,7 +89,7 @@ Tracker::Tracker(const TrackerParams& tracker_params,
 // it modifies debuginfo_...
 // NOTE: you do not need R in the mono case. For stereo cameras we pass R
 // to ensure we rectify the versors and 3D points of the features we detect.
-void Tracker::featureTracking(
+void KiTracker::featureTracking(
     Frame* ref_frame,
     Frame* cur_frame,
     const gtsam::Rot3& ref_R_cur,
@@ -210,7 +210,7 @@ void Tracker::featureTracking(
   debug_info_.featureTrackingTime_ = utils::Timer::toc(tic).count();
 }
 
-TrackingStatusPose Tracker::geometricOutlierRejection2d2d(
+TrackingStatusPose KiTracker::geometricOutlierRejection2d2d(
     const BearingVectors& ref_bearings,
     const BearingVectors& cur_bearings,
     const KeypointMatches& matches_ref_cur,
@@ -320,7 +320,7 @@ TrackingStatusPose Tracker::geometricOutlierRejection2d2d(
 
 // TODO(Toni): this function is almost a replica of the Stereo version,
 // factorize.
-TrackingStatusPose Tracker::geometricOutlierRejection2d2d(
+TrackingStatusPose KiTracker::geometricOutlierRejection2d2d(
     Frame* ref_frame,
     Frame* cur_frame,
     const gtsam::Pose3& cam_lkf_Pose_cam_kf) {
@@ -380,7 +380,7 @@ TrackingStatusPose Tracker::geometricOutlierRejection2d2d(
 // TODO(Toni): remove
 // TODO(Toni) break down this gargantuan function...
 std::pair<TrackingStatusPose, gtsam::Matrix3>
-Tracker::geometricOutlierRejection3d3dGivenRotation(
+KiTracker::geometricOutlierRejection3d3dGivenRotation(
     const StatusKeypointsCV& ref_keypoints_status_left,
     const StatusKeypointsCV& ref_keypoints_status_right,
     const StatusKeypointsCV& cur_keypoints_status_left,
@@ -435,7 +435,7 @@ Tracker::geometricOutlierRejection3d3dGivenRotation(
   for (const KeypointMatch& kpt_match : matches_ref_cur) {
     // Get reference vector and covariance:
     std::tie(f_ref_i, cov_ref_i) =
-        Tracker::getPoint3AndCovariance(ref_keypoints_status_left,
+        KiTracker::getPoint3AndCovariance(ref_keypoints_status_left,
                                         ref_keypoints_status_right,
                                         ref_keypoints_3d,
                                         stereo_cam,
@@ -444,7 +444,7 @@ Tracker::geometricOutlierRejection3d3dGivenRotation(
                                         std::nullopt);
     // Get current vectors and covariance:
     std::tie(R_f_cur_i, cov_R_cur_i) =
-        Tracker::getPoint3AndCovariance(cur_keypoints_status_left,
+        KiTracker::getPoint3AndCovariance(cur_keypoints_status_left,
                                         cur_keypoints_status_right,
                                         cur_keypoints_3d,
                                         stereo_cam,
@@ -632,7 +632,7 @@ Tracker::geometricOutlierRejection3d3dGivenRotation(
 }
 
 std::pair<TrackingStatusPose, gtsam::Matrix3>
-Tracker::geometricOutlierRejection3d3dGivenRotation(
+KiTracker::geometricOutlierRejection3d3dGivenRotation(
     StereoFrame& ref_stereo_frame,
     StereoFrame& cur_stereo_frame,
     const gtsam::StereoCamera& stereo_camera,
@@ -664,7 +664,7 @@ Tracker::geometricOutlierRejection3d3dGivenRotation(
 
 // TODO(Toni): this function is almost a replica of the Mono version,
 // factorize.
-TrackingStatusPose Tracker::geometricOutlierRejection3d3d(
+TrackingStatusPose KiTracker::geometricOutlierRejection3d3d(
     const Landmarks& ref_keypoints_3d,
     const Landmarks& cur_keypoints_3d,
     const KeypointMatches& matches_ref_cur,
@@ -741,7 +741,7 @@ TrackingStatusPose Tracker::geometricOutlierRejection3d3d(
   return status_pose;
 }
 
-TrackingStatusPose Tracker::geometricOutlierRejection3d3d(
+TrackingStatusPose KiTracker::geometricOutlierRejection3d3d(
     StereoFrame* ref_stereo_frame,
     StereoFrame* cur_stereo_frame,
     const gtsam::Pose3& cam_lkf_Pose_cam_kf) {
@@ -769,7 +769,7 @@ TrackingStatusPose Tracker::geometricOutlierRejection3d3d(
 }
 
 // And don't use pairs to return :/
-std::pair<Vector3, Matrix3> Tracker::getPoint3AndCovariance(
+std::pair<Vector3, Matrix3> KiTracker::getPoint3AndCovariance(
     const StatusKeypointsCV& keypoints_undistorted_left,
     const StatusKeypointsCV& keypoints_undistorted_right,
     const BearingVectors& keypoints_3d,
@@ -817,13 +817,13 @@ std::pair<Vector3, Matrix3> Tracker::getPoint3AndCovariance(
   return std::make_pair(point3_i, cov_i);
 }
 
-std::pair<Vector3, Matrix3> Tracker::getPoint3AndCovariance(
+std::pair<Vector3, Matrix3> KiTracker::getPoint3AndCovariance(
     const StereoFrame& stereo_frame,
     const gtsam::StereoCamera& stereo_cam,
     const size_t point_id,
     const gtsam::Matrix3& stereo_point_covariance,
     std::optional<gtsam::Matrix3> Rmat) {
-  return Tracker::getPoint3AndCovariance(
+  return KiTracker::getPoint3AndCovariance(
       stereo_frame.left_keypoints_rectified_,
       stereo_frame.right_keypoints_rectified_,
       stereo_frame.keypoints_3d_,
@@ -833,7 +833,7 @@ std::pair<Vector3, Matrix3> Tracker::getPoint3AndCovariance(
       Rmat);
 }
 
-void Tracker::findOutliers(const KeypointMatches& matches_ref_cur,
+void KiTracker::findOutliers(const KeypointMatches& matches_ref_cur,
                            std::vector<int> inliers,
                            std::vector<int>* outliers) {
   CHECK_NOTNULL(outliers)->clear();
@@ -853,7 +853,7 @@ void Tracker::findOutliers(const KeypointMatches& matches_ref_cur,
 }
 
 // TODO(Toni): this and findOutliers can be greatly optimized...
-void Tracker::removeOutliersMono(const std::vector<int>& inliers,
+void KiTracker::removeOutliersMono(const std::vector<int>& inliers,
                                  Frame* ref_frame,
                                  Frame* cur_frame,
                                  KeypointMatches* matches_ref_cur) {
@@ -881,7 +881,7 @@ void Tracker::removeOutliersMono(const std::vector<int>& inliers,
   *matches_ref_cur = outlier_free_matches_ref_cur;
 }
 
-void Tracker::removeOutliersStereo(const std::vector<int>& inliers,
+void KiTracker::removeOutliersStereo(const std::vector<int>& inliers,
                                    StereoFrame* ref_stereoFrame,
                                    StereoFrame* cur_stereoFrame,
                                    KeypointMatches* matches_ref_cur) {
@@ -916,7 +916,7 @@ void Tracker::removeOutliersStereo(const std::vector<int>& inliers,
   *matches_ref_cur = outlier_free_matches_ref_cur;
 }
 
-void Tracker::findMatchingKeypoints(const Frame& ref_frame,
+void KiTracker::findMatchingKeypoints(const Frame& ref_frame,
                                     const Frame& cur_frame,
                                     KeypointMatches* matches_ref_cur) {
   CHECK_NOTNULL(matches_ref_cur)->clear();
@@ -945,7 +945,7 @@ void Tracker::findMatchingKeypoints(const Frame& ref_frame,
   }
 }
 
-void Tracker::findMatchingStereoKeypoints(
+void KiTracker::findMatchingStereoKeypoints(
     const StereoFrame& ref_stereoFrame,
     const StereoFrame& cur_stereoFrame,
     KeypointMatches* matches_ref_cur_stereo) {
@@ -960,7 +960,7 @@ void Tracker::findMatchingStereoKeypoints(
                               matches_ref_cur_stereo);
 }
 
-void Tracker::findMatchingStereoKeypoints(
+void KiTracker::findMatchingStereoKeypoints(
     const StereoFrame& ref_stereoFrame,
     const StereoFrame& cur_stereoFrame,
     const KeypointMatches& matches_ref_cur_mono,
@@ -988,7 +988,7 @@ void Tracker::findMatchingStereoKeypoints(
   }
 }
 
-bool Tracker::computeMedianDisparity(const KeypointsCV& ref_frame_kpts,
+bool KiTracker::computeMedianDisparity(const KeypointsCV& ref_frame_kpts,
                                      const KeypointsCV& cur_frame_kpts,
                                      const KeypointMatches& matches_ref_cur,
                                      double* median_disparity) {
@@ -1017,7 +1017,7 @@ bool Tracker::computeMedianDisparity(const KeypointsCV& ref_frame_kpts,
   return true;
 }
 
-cv::Mat Tracker::getTrackerImage(const Frame& ref_frame,
+cv::Mat KiTracker::getTrackerImage(const Frame& ref_frame,
                                  const Frame& cur_frame,
                                  const KeypointsCV& extra_corners_gray,
                                  const KeypointsCV& extra_corners_blue) const {
@@ -1061,7 +1061,7 @@ cv::Mat Tracker::getTrackerImage(const Frame& ref_frame,
   return img_rgb;
 }
 
-bool Tracker::pnp(const StereoFrame& cur_stereo_frame,
+bool KiTracker::pnp(const StereoFrame& cur_stereo_frame,
                   gtsam::Pose3* W_Pose_cam_estimate,
                   std::vector<int>* inliers,
                   gtsam::Pose3* W_Pose_cam_prior) {
@@ -1119,7 +1119,7 @@ bool Tracker::pnp(const StereoFrame& cur_stereo_frame,
   return success;
 }
 
-bool Tracker::pnp(const BearingVectors& cam_bearing_vectors,
+bool KiTracker::pnp(const BearingVectors& cam_bearing_vectors,
                   const Landmarks& F_points,
                   gtsam::Pose3* F_Pose_cam_estimate,
                   std::vector<int>* inliers,

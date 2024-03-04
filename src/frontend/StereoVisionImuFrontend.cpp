@@ -53,7 +53,7 @@ StereoVisionImuFrontend::StereoVisionImuFrontend(
   feature_detector_ = std::make_unique<FeatureDetector>(
       frontend_params.feature_detector_params_);
 
-  tracker_ = std::make_unique<Tracker>(frontend_params_.tracker_params_,
+  tracker_ = std::make_unique<KiTracker>(frontend_params_.tracker_params_,
                                        stereo_camera_->getOriginalLeftCamera(),
                                        display_queue);
 

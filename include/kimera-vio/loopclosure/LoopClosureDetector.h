@@ -420,8 +420,8 @@ class LoopClosureDetector {
   cv::Ptr<cv::DescriptorMatcher> orb_feature_matcher_;
 
   // TODO(marcus): want to move outlier-rejection to its own file
-  // Tracker for outlier rejection
-  Tracker::UniquePtr tracker_;
+  // KiTracker for outlier rejection
+  KiTracker::UniquePtr tracker_;
 
   // BoW database
   std::unique_ptr<OrbDatabase> db_BoW_;

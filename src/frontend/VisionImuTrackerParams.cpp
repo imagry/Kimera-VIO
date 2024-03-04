@@ -25,12 +25,12 @@
 
 namespace VIO {
 
-TrackerParams::TrackerParams() : PipelineParams("Tracker Parameters") {}
+TrackerParams::TrackerParams() : PipelineParams("KiTracker Parameters") {}
 
 void TrackerParams::print() const {
   std::stringstream out;
   PipelineParams::print(out,
-                        // Tracker params
+                        // KiTracker params
                         "klt_win_size_: ",
                         klt_win_size_,
                         "klt_max_iter_: ",

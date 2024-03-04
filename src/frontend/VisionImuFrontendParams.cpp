@@ -46,7 +46,7 @@ FrontendParams::FrontendParams() : PipelineParams("Frontend Parameters") {}
 void FrontendParams::print() const {
   std::stringstream out;
   PipelineParams::print(out,
-                        // Tracker params
+                        // KiTracker params
                         // "** STEREO tracker parameters **\n"
                         "min_intra_keyframe_time_: ",
                         min_intra_keyframe_time_ns_,

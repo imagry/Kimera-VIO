@@ -43,24 +43,24 @@ namespace VIO {
 class DisplayInputBase;
 using DisplayQueue = ThreadsafeQueue<std::unique_ptr<DisplayInputBase>>;
 
-class Tracker {
+class KiTracker {
  public:
-  KIMERA_POINTER_TYPEDEFS(Tracker);
-  KIMERA_DELETE_COPY_CONSTRUCTORS(Tracker);
+  KIMERA_POINTER_TYPEDEFS(KiTracker);
+  KIMERA_DELETE_COPY_CONSTRUCTORS(KiTracker);
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
  public:
   /**
-   * @brief Tracker tracks features from frame to frame.
+   * @brief KiTracker tracks features from frame to frame.
    * @param tracker_params Parameters for feature tracking
    * @param Camera Camera used for tracking
    */
-  Tracker(const TrackerParams& tracker_params,
+  KiTracker(const TrackerParams& tracker_params,
           const Camera::ConstPtr& camera,
           DisplayQueue* display_queue = nullptr);
 
-  virtual ~Tracker() = default;
+  virtual ~KiTracker() = default;
 
-  // Tracker parameters.
+  // KiTracker parameters.
   const TrackerParams tracker_params_;
 
   // Mask for features.

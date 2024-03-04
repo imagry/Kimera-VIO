@@ -53,7 +53,7 @@ RgbdVisionImuFrontend::RgbdVisionImuFrontend(
   feature_detector_ = std::make_unique<FeatureDetector>(
       frontend_params.feature_detector_params_);
 
-  tracker_ = std::make_unique<Tracker>(
+  tracker_ = std::make_unique<KiTracker>(
       frontend_params_.tracker_params_, camera_, display_queue);
 
   if (VLOG_IS_ON(1)) tracker_->tracker_params_.print();

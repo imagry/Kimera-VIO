@@ -34,10 +34,10 @@ using ::testing::NotNull;
 
 typedef std::pair<TrackingStatus, gtsam::Pose3> RansacResult;
 
-class MockTracker : public Tracker {
+class MockTracker : public KiTracker {
  public:
   MockTracker()
-      : Tracker(TrackerParams(), std::make_shared<Camera>(CameraParams())) {}
+      : KiTracker(TrackerParams(), std::make_shared<Camera>(CameraParams())) {}
 
   ~MockTracker() = default;
 

@@ -48,7 +48,7 @@ MonoVisionImuFrontend::MonoVisionImuFrontend(
       mono_camera_(camera) {
   CHECK(mono_camera_);
 
-  tracker_ = std::make_unique<Tracker>(
+  tracker_ = std::make_unique<KiTracker>(
       frontend_params_.tracker_params_, mono_camera_, display_queue);
 
   feature_detector_ = std::make_unique<FeatureDetector>(

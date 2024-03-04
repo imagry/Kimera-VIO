@@ -54,7 +54,7 @@ class TimeAlignerBase {
    * @param imuaccgyrs IMU measurements between the last frame and the newest.
    * @returns the estimate and whether it is valid
    */
-  virtual Result estimateTimeAlignment(Tracker& tracker,
+  virtual Result estimateTimeAlignment(KiTracker& tracker,
                                        const FrontendOutputPacketBase& output,
                                        const ImuStampS& imu_stamps,
                                        const ImuAccGyrS& imu_accgyrs,

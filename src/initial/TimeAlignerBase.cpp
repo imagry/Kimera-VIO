@@ -56,7 +56,7 @@ void TimeAlignerBase::mergeImuData(const ImuStampS& latest_stamps,
 }
 
 TimeAlignerBase::Result TimeAlignerBase::estimateTimeAlignment(
-    Tracker& tracker,
+    KiTracker& tracker,
     const FrontendOutputPacketBase& output,
     const ImuStampS& imu_stamps,
     const ImuAccGyrS& imu_accgyrs,

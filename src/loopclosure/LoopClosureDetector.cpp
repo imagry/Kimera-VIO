@@ -117,7 +117,7 @@ LoopClosureDetector::LoopClosureDetector(
   shared_noise_model_ = gtsam::noiseModel::Diagonal::Precisions(precisions);
 
   // Outlier rejection initialization (inside of tracker)
-  tracker_ = std::make_unique<Tracker>(
+  tracker_ = std::make_unique<KiTracker>(
       lcd_params.tracker_params_,
       std::make_shared<VIO::Camera>(tracker_cam_params));
 

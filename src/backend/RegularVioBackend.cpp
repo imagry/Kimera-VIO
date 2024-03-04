@@ -211,7 +211,7 @@ bool RegularVioBackend::addVisualInertialStateAndOptimize(
   switch (kfTrackingStatus_mono) {
     case TrackingStatus::LOW_DISPARITY: {
       // Vehicle is not moving.
-      VLOG(0) << "Tracker has a LOW_DISPARITY status.";
+      VLOG(0) << "KiTracker has a LOW_DISPARITY status.";
       VLOG(10) << "Add zero velocity and no motion factors.";
       addZeroVelocityPrior(curr_kf_id_);
       addNoMotionFactor(last_kf_id_, curr_kf_id_);
@@ -220,13 +220,13 @@ bool RegularVioBackend::addVisualInertialStateAndOptimize(
     }
     default: {
       kfTrackingStatus_mono == TrackingStatus::VALID
-          ? VLOG(1) << "Tracker has a VALID status."
+          ? VLOG(1) << "KiTracker has a VALID status."
           : kfTrackingStatus_mono == TrackingStatus::FEW_MATCHES
-                ? VLOG(1) << "Tracker has a FEW_MATCHES status."
+                ? VLOG(1) << "KiTracker has a FEW_MATCHES status."
                 : kfTrackingStatus_mono == TrackingStatus::INVALID
-                      ? VLOG(1) << "Tracker has a INVALID status."
+                      ? VLOG(1) << "KiTracker has a INVALID status."
                       : kfTrackingStatus_mono == TrackingStatus::DISABLED
-                            ? VLOG(1) << "Tracker has a DISABLED status."
+                            ? VLOG(1) << "KiTracker has a DISABLED status."
                             : VLOG(10) << "";
 
       if (kfTrackingStatus_mono == TrackingStatus::VALID) {

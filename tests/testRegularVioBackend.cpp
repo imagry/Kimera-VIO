@@ -154,8 +154,8 @@ TEST(testRegularVio, robotMovingWithConstantVelocity) {
   //    using StatusSmartStereoMeasurements =
   //                        pair<TrackerStatusSummary, SmartStereoMeasurements>;
   TrackerStatusSummary tracker_status_valid;
-  tracker_status_valid.kfTrackingStatus_mono_ = Tracker::VALID;
-  tracker_status_valid.kfTrackingStatus_stereo_ = Tracker::VALID;
+  tracker_status_valid.kfTrackingStatus_mono_ = KiTracker::VALID;
+  tracker_status_valid.kfTrackingStatus_stereo_ = KiTracker::VALID;
 
   // TODO add regularities vector.
   // TODO fill mesh_lmk_ids with a triplet of lmk_ids.
@@ -295,8 +295,8 @@ TEST(testRegularVio, robotMovingWithConstantVelocitySmartAndProjFactor) {
   //    using StatusSmartStereoMeasurements =
   //                        pair<TrackerStatusSummary, SmartStereoMeasurements>;
   TrackerStatusSummary tracker_status_valid;
-  tracker_status_valid.kfTrackingStatus_mono_ = Tracker::VALID;
-  tracker_status_valid.kfTrackingStatus_stereo_ = Tracker::VALID;
+  tracker_status_valid.kfTrackingStatus_mono_ = KiTracker::VALID;
+  tracker_status_valid.kfTrackingStatus_stereo_ = KiTracker::VALID;
 
   vector<StatusSmartStereoMeasurements> all_measurements;
   for (size_t i = 0; i < num_key_frames; i++) {
