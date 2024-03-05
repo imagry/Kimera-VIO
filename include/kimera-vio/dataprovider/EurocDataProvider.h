@@ -213,7 +213,7 @@ class EurocDataProvider : public DataProviderInterface {
   // Map from camera name to its images
   std::map<std::string, CameraImageLists> camera_image_lists_;
 
-  bool is_gt_available_;
+  bool is_gt_available_ = false;
   std::string dataset_name_;
   std::string dataset_path_;
 

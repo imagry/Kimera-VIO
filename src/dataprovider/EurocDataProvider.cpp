@@ -457,22 +457,24 @@ bool EurocDataProvider::parseDataset() {
   camera_image_lists_[kRightCamName] = right_cam_image_list;
   // CHECK(sanityCheckCameraData(camera_names_, &camera_image_lists_));
 
-  // Parse Ground-Truth data.
-  static const std::string ground_truth_name = "state_groundtruth_estimate0";
-  is_gt_available_ = parseGtData(dataset_path_, ground_truth_name);
+  if (vio_params_.backend_params_->autoInitialize_ == 0) {
+    // Parse Ground-Truth data.
+    static const std::string ground_truth_name = "state_groundtruth_estimate0";
+    is_gt_available_ = parseGtData(dataset_path_, ground_truth_name);
 
-  clipFinalFrame();
-
-  // Log Ground-Truth data.
-  if (logger_) {
-    if (is_gt_available_) {
-      logger_->logGtData(dataset_path_ + "/mav0/" + ground_truth_name +
-                         "/data.csv");
-    } else {
-      LOG(ERROR) << "Requested ground-truth data logging but no ground-truth "
-                    "data available.";
+    // Log Ground-Truth data.
+    if (logger_) {
+        if (is_gt_available_) {
+        logger_->logGtData(dataset_path_ + "/mav0/" + ground_truth_name +
+                            "/data.csv");
+        } else {
+        LOG(ERROR) << "Requested ground-truth data logging but no ground-truth "
+                        "data available.";
+        }
     }
   }
+
+  clipFinalFrame();
 
   return true;
 }
