@@ -37,7 +37,7 @@ DEFINE_int32(dataset_type,
              "0: Euroc \n 1: Kitti (not supported).");
 DEFINE_string(
     params_folder_path,
-    "../params/Euroc",
+    "../params/CarlaMono",
     "Path to the folder containing the yaml files with the VIO parameters.");
 
 int main(int argc, char* argv[]) {
@@ -47,7 +47,16 @@ int main(int argc, char* argv[]) {
   google::InitGoogleLogging(argv[0]);
 
   // Parse VIO parameters from gflags.
-  VIO::VioParams vio_params(FLAGS_params_folder_path);
+  // VIO::VioParams vio_params(FLAGS_params_folder_path);
+  VIO::VioParams vio_params("/code/Kimera-VIO/params/CarlaMono/PipelineParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/ImuParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/LeftCameraParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/RightCameraParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/FrontendParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/BackendParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/LcdParams.yaml",
+                            "/code/Kimera-VIO/params/CarlaMono/DisplayParams.yaml",
+                            "", true);
 
   // Build dataset parser.
   VIO::DataProviderInterface::Ptr dataset_parser = nullptr;
